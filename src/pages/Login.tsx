@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
-import { useEffect } from "react";
 const formSchema = z.object({
     email: z.string().email({ message: "Please Enter email address" }),
     password: z.string().min(6, {
