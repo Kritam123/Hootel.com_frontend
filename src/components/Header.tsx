@@ -34,8 +34,12 @@ const Header = () => {
         {
           isLoggedIn ? 
           <div className="space-x-3">
+            <Link to={"/my-bookings"}>
             <Button>My booking</Button>
+            </Link>
+            <Link to={"/my-hotels"}>
             <Button>My Hotels</Button>
+            </Link>
             <span className="text-white">Hi, <span className="font-semibold">{user?.firstName}</span></span>
             <Button onClick={handleLogOut} variant={"secondary"}>
               {isLoading ? "Logging Out ...." : "SignOut"}
