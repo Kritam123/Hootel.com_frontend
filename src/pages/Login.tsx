@@ -15,6 +15,14 @@ import { Input } from "@/components/ui/input";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
+type ErrorMessage = {
+    response: {
+        data: {
+            message: string
+        }
+    }
+}
+
 const formSchema = z.object({
     email: z.string().email({ message: "Please Enter email address" }),
     password: z.string().min(6, {
@@ -32,19 +40,19 @@ const Login = () => {
             password: "",
         },
     });
-    const {mutate,isLoading} = useMutation(apiClient.signIn, {
+    const { mutate, isLoading } = useMutation(apiClient.signIn, {
         onSuccess: async () => {
             await queryClient.invalidateQueries("validateToken");
             await queryClient.invalidateQueries("fetchCurrentUser");
             toast.success("Sign in Successful!");
             navigate(location.state?.from?.pathname || "/");
         },
-        onError: (error: Error) => {
-            toast.error(error.message);
+        onError: (error: ErrorMessage) => {
+            toast.error(error.response.data.message);
         },
     });
     function onSubmit(values: z.infer<typeof formSchema>) {
-       mutate(values);
+        mutate(values);
     }
     return (
         <Form {...form}>

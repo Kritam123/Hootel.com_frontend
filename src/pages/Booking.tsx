@@ -9,7 +9,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useAppContext } from "@/context/AppContext";
 
 const Booking = () => {
-  const { stripePromise } = useAppContext();
+  const { stripePromise, user } = useAppContext();
   const search = useSearchContext();
   const { hotelId } = useParams();
 
@@ -36,7 +36,7 @@ const Booking = () => {
       enabled: !!hotelId && numberOfNights > 0,
     }
   );
-
+console.log(paymentIntentData)
   const { data: hotel } = useQuery(
     "fetchHotelByID",
     () => apiClient.fetchHotelById(hotelId as string),
@@ -45,10 +45,7 @@ const Booking = () => {
     }
   );
 
-  const { data: currentUser } = useQuery(
-    "fetchCurrentUser",
-    apiClient.fetchCurrentUser
-  );
+
 
   if (!hotel) {
     return <></>;
@@ -64,7 +61,7 @@ const Booking = () => {
         numberOfNights={numberOfNights}
         hotel={hotel}
       />
-      {currentUser && paymentIntentData && (
+      {user && paymentIntentData && (
         <Elements
           stripe={stripePromise}
           options={{
@@ -72,7 +69,7 @@ const Booking = () => {
           }}
         >
           <BookingForm
-            currentUser={currentUser}
+            currentUser={user}
             paymentIntent={paymentIntentData}
           />
         </Elements>

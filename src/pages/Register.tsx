@@ -33,6 +33,13 @@ const formSchema = z.object({
   message: "Password don't Match",
   path: ["confirmPassword"]
 })
+type ErrorMessage = {
+  response: {
+      data: {
+          message: string
+      }
+  }
+}
 const Register = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -54,8 +61,8 @@ const Register = () => {
       toast.success("Registration Success!")
       navigate("/");
     },
-    onError: (error: Error) => {
-      toast.error(error.message);
+    onError: (error: ErrorMessage) => {
+      toast.error(error.response.data.message);
     },
   });
 
